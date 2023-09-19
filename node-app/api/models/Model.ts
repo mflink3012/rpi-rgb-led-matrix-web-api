@@ -4,7 +4,7 @@ export abstract class Model extends Object {
     updated: string;
     version: number = 1;
     hash: string = null;
-    className: string = 'Model';
+    modelType: string = 'Model';
 
     constructor() {
         super();

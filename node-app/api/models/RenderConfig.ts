@@ -9,6 +9,7 @@ export class RenderConfig extends Model {
 
     constructor() {
         super();
+        this.modelType = 'RenderConfig';
         Object.setPrototypeOf(this, RenderConfig.prototype);
     }
 };
@@ -19,6 +20,7 @@ export class ImageRenderConfig extends RenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'ImageRenderConfig';
         Object.setPrototypeOf(this, ImageRenderConfig.prototype);
     }
 };
@@ -28,6 +30,7 @@ export class StaticImageRenderConfig extends ImageRenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'StaticImageRenderConfig';
         Object.setPrototypeOf(this, StaticImageRenderConfig.prototype);
     }
 };
@@ -37,6 +40,7 @@ export class AnimatedImageRenderConfig extends ImageRenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'AnimatedImageRenderConfig';
         Object.setPrototypeOf(this, AnimatedImageRenderConfig.prototype);
     }
 };
@@ -49,6 +53,7 @@ export class TextRenderConfig extends RenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'StaticTextRenderConfig';
         Object.setPrototypeOf(this, TextRenderConfig.prototype);
     }
 };
@@ -58,6 +63,7 @@ export class StaticTextRenderConfig extends TextRenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'StaticTextRenderConfig';
         Object.setPrototypeOf(this, StaticTextRenderConfig.prototype);
     }
 };
@@ -69,6 +75,7 @@ export class AnimatedTextRenderConfig extends TextRenderConfig {
 
     constructor() {
         super();
+        this.modelType = 'AnimatedTextRenderConfig';
         Object.setPrototypeOf(this, AnimatedTextRenderConfig.prototype);
     }
 };
