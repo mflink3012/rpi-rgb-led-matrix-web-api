@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "outDir": "../dist/webroot",
+        "target": "es5",
+        "noEmitOnError": true,
+        "esModuleInterop": true
+    },
+    "include": [
+        "./**/*"
+    ]
+}
