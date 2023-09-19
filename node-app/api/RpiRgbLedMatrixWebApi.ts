@@ -26,7 +26,16 @@ export class RpiRgbLedMatrixWebApi extends Object {
         app.post(`${this.API_BASEPATH}/renderconfigs/`, (request: Request, response: Response) => {
             let renderConfig: RenderConfig = request.body;
 
-            return response.status(201).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.create(renderConfig));
+
+            let result: express.Response<any, Record<string, any>> = null;
+            
+            try {
+                result = response.status(201).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.create(renderConfig));
+            } catch (error) {
+                result = response.status(400).send(new ErrorObject('RENDER_CONFIG:CREATE_FAILED', error.toString()))
+            }
+
+            return result;
         });
 
         app.put(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
