@@ -5,6 +5,7 @@ import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
 import { NoOpModelStorage } from "../implementations/NoOpModelStorage";
+import { RenderConfigRegistry } from "../models/RenderConfig";
 
 /**
  * An abstract class for handling models in a repository with transaction-awareness on modification operations (create, update, delete).
@@ -18,8 +19,8 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
     private readonly SEMAPHORE: semaphore.Semaphore = semaphore(1);
     /** The data of this repository. */
     protected models: Object = {};
-    protected readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash'];
-    protected storage: ModelStorageInterface<M> = new NoOpModelStorage(); 
+    protected readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash', 'modelType'];
+    protected storage: ModelStorageInterface<M> = new NoOpModelStorage();
 
     constructor(storage: ModelStorageInterface<M> = null) {
         super();
@@ -66,32 +67,34 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
      * @override
      */
     public create(model: M, preserveFields: Array<string> = []): M {
+        let newModel = this.createModel(model);
+
         if (!preserveFields.includes('id') || !model.id || model.id === null) {
             this.transaction(() => {
-                model.id = uuidv4();
+                newModel.id = uuidv4();
             });
         }
 
         if (!preserveFields.includes('created') || !model.created || model.created === null) {
-            model.created = new Date().toISOString();
+            newModel.created = new Date().toISOString();
         }
 
         if (!preserveFields.includes('version') || !model.version || model.version === null) {
-            model.version = 1;
+            newModel.version = 1;
         }
 
-        model.hash = this.createHash(model);
+        newModel.hash = this.createHash(model);
 
         this.transaction(() => {
-            if (this.contains(model.id)) {
-                throw new Error(`There is already one model with id ${model.id} in this repository!`)
+            if (this.contains(newModel.id)) {
+                throw new Error(`There is already one model with id ${newModel.id} in this repository!`)
             }
 
-            this.models[model.id] = model;
+            this.models[newModel.id] = newModel;
             this.storage.save(this.models);
         });
 
-        let result = this.read(model.id);
+        let result = this.read(newModel.id);
 
         return result;
     }
@@ -313,5 +316,26 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
      */
     protected deepClone(model: M): M {
         return JSON.parse(JSON.stringify(model));
+    }
+
+    protected createModel(sourceModel: M): M {
+        if (!RenderConfigRegistry[sourceModel.modelType]) {
+            throw Error(`${sourceModel.modelType} is not a valid modelType.`)
+        }
+
+        let model = new RenderConfigRegistry[sourceModel.modelType]();
+        this.deepCopy(sourceModel, model);
+        return model;
+    }
+
+    /**
+     * FIXME: NOT WORKING FULLY RIGHT NOW!
+     */
+    protected deepCopy(sourceModel: M, targetModel: M): void {
+        Object.getOwnPropertyNames(targetModel).forEach(field => {
+            if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && sourceModel.hasOwnProperty(field)) {
+                targetModel[field] = sourceModel[field];
+            }
+        });
     }
 };

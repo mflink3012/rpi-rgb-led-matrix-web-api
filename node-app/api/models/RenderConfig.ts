@@ -2,7 +2,7 @@ import { Dimensions } from "./Dimensions";
 import { Model } from "./Model";
 import { Position } from "./Position";
 
-export class RenderConfig extends Model {
+export abstract class RenderConfig extends Model {
     name: string = 'A new render configuration';
     backgroundColor: string = '00000000'; // transparent
     position: Position = new Position();
@@ -79,3 +79,12 @@ export class AnimatedTextRenderConfig extends TextRenderConfig {
         Object.setPrototypeOf(this, AnimatedTextRenderConfig.prototype);
     }
 };
+
+export const RenderConfigRegistry: Object = {
+    ImageRenderConfig,
+    StaticImageRenderConfig,
+    AnimatedImageRenderConfig,
+    TextRenderConfig,
+    StaticTextRenderConfig,
+    AnimatedTextRenderConfig
+}
