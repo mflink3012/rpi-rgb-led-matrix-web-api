@@ -38,7 +38,7 @@ export class RpiRgbLedMatrixWebApi extends Object {
             return result;
         });
 
-        app.put(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.patch(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
             if (!RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
