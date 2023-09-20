@@ -311,7 +311,7 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
      * @returns A deep clone of the model provided.
      */
     protected deepClone(model: M): M {
-        return JSON.parse(JSON.stringify(model));
+        return structuredClone(model);
     }
 
     protected createModel(sourceModel: M): M {
@@ -327,10 +327,16 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
     /**
      * FIXME: NOT WORKING FULLY RIGHT NOW!
      */
-    protected deepCopy(sourceModel: M, targetModel: M): void {
-        Object.getOwnPropertyNames(targetModel).forEach(field => {
-            if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && sourceModel.hasOwnProperty(field)) {
-                targetModel[field] = sourceModel[field];
+    protected deepCopy(source: Object, target: Object): void {
+        Object.getOwnPropertyNames(target).forEach(field => {
+            if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
+                if (source[field] != null && Array.isArray(target[field])) {
+                    target[field] = source[field].slice();
+                } else if (source[field] != null && typeof(target[field]) == 'object') {
+                    this.deepCopy(source[field], target[field]);
+                } else {
+                    target[field] = source[field];
+                }
             }
         });
     }
