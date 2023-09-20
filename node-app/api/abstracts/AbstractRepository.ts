@@ -167,19 +167,15 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
 
         if (this.contains(model.id)) {
             this.transaction(() => {
-                let existingModel: M = this.deepClone(this.models[model.id]);
                 let updatedModel: M = this.deepClone(this.models[model.id]);
+                let existingModelHash: string = updatedModel.hash;
 
-                Object.getOwnPropertyNames(existingModel).forEach(field => {
-                    if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && model.hasOwnProperty(field)) {
-                        updatedModel[field] = model[field];
-                    }
-                });
+                this.deepCopy(model, updatedModel);
 
                 let updatedModelHash: string = this.createHash(updatedModel);
 
                 // Avoid unnecessary updates. Reflect real updates only!
-                if (updatedModelHash != existingModel.hash) {
+                if (updatedModelHash != existingModelHash) {
                     updatedModel.updated = new Date().toISOString();
                     updatedModel.version = updatedModel.version + 1;
                     updatedModel.hash = this.createHash(updatedModel);
