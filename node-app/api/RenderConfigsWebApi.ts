@@ -1,6 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import { ErrorObject } from "./ErrorObject";
-import { RenderConfig } from "./models/RenderConfigRegistry";
+import { RenderConfig } from "./abstracts/RenderConfig";
 import { RenderConfigsRepository } from "./implementations/RenderConfigsRepository";
 import { SimpleJSONFileModelStorage } from "./implementations/SimpleJSONFileModelStorage";
 import path from "path";
