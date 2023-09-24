@@ -15,6 +15,7 @@ export class RenderConfigsWebApi extends Object {
         super();
         Object.setPrototypeOf(this, RenderConfigsWebApi.prototype);
 
+        // Create one
         app.post(`${RenderConfigsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
             let renderConfig: RenderConfig = request.body;
 
@@ -30,6 +31,22 @@ export class RenderConfigsWebApi extends Object {
             return result;
         });
 
+        // Read all
+        app.get(`${RenderConfigsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
+            return response.status(200).send(RenderConfigsWebApi.REPO.readAll());
+        });
+
+        // Read one
+        app.get(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
+            if (!RenderConfigsWebApi.REPO.contains(request.params.id)) {
+                let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
+                return response.status(404).send(error);
+            }
+
+            return response.status(200).send(RenderConfigsWebApi.REPO.read(request.params.id));
+        });
+
+        // Update one
         app.patch(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
             if (!RenderConfigsWebApi.REPO.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
@@ -41,6 +58,7 @@ export class RenderConfigsWebApi extends Object {
             return response.status(200).send(RenderConfigsWebApi.REPO.update(renderConfig));
         });
 
+        // Delete one
         app.delete(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
             if (RenderConfigsWebApi.REPO.contains(request.params.id)) {
                 RenderConfigsWebApi.REPO.delete(request.params.id);
@@ -50,19 +68,6 @@ export class RenderConfigsWebApi extends Object {
             }
 
             return response.status(200).send();
-        });
-
-        app.get(`${RenderConfigsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
-            return response.status(200).send(RenderConfigsWebApi.REPO.readAll());
-        });
-
-        app.get(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
-            if (!RenderConfigsWebApi.REPO.contains(request.params.id)) {
-                let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
-                return response.status(404).send(error);
-            }
-
-            return response.status(200).send(RenderConfigsWebApi.REPO.read(request.params.id));
         });
     }
 };
