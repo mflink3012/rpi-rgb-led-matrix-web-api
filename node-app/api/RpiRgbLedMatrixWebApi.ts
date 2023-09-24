@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import cors from "cors";
 import { BearerAuthorization } from "./BearerAuthorization";
 import { RenderConfigsWebApi } from "./RenderConfigsWebApi";
+import { PlaylistsWebApi } from "./PlaylistsWebApi";
 
 export class RpiRgbLedMatrixWebApi extends Object {
     constructor(app: Application, tokens: Array<string>) {
@@ -15,5 +16,6 @@ export class RpiRgbLedMatrixWebApi extends Object {
         app.use(BearerAuthorization(tokens));
 
         new RenderConfigsWebApi(app);
+        new PlaylistsWebApi(app);
     }
 };
