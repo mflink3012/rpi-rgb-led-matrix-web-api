@@ -9,7 +9,7 @@ import path from "path";
 
 export class RpiRgbLedMatrixWebApi extends Object {
     // FIXME: Get that path from config. And decouple it somehow.
-    static readonly renderConfigsRepo: RenderConfigsRepository = new RenderConfigsRepository(new SimpleJSONFileModelStorage(path.join(__dirname, '..', '..', 'data', 'renderConfigs.json')));
+    static readonly RENDER_CONFIGS_REPO: RenderConfigsRepository = new RenderConfigsRepository(new SimpleJSONFileModelStorage(path.join(__dirname, '..', '..', 'data', 'renderConfigs.json')));
     static readonly API_VERSION: string = 'v1';
     static readonly API_BASEPATH: string = `/api/${RpiRgbLedMatrixWebApi.API_VERSION}`;
 
@@ -30,7 +30,7 @@ export class RpiRgbLedMatrixWebApi extends Object {
             let result: express.Response<any, Record<string, any>> = null;
             
             try {
-                result = response.status(201).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.create(renderConfig));
+                result = response.status(201).send(RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.create(renderConfig));
             } catch (error) {
                 result = response.status(400).send(new ErrorObject('RENDER_CONFIG:CREATE_FAILED', error.toString()))
             }
@@ -39,19 +39,19 @@ export class RpiRgbLedMatrixWebApi extends Object {
         });
 
         app.patch(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
-            if (!RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
+            if (!RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
             }
 
             let renderConfig: RenderConfig = request.body;
             renderConfig.id = request.params.id;
-            return response.status(200).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.update(renderConfig));
+            return response.status(200).send(RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.update(renderConfig));
         });
 
         app.delete(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
-            if (RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
-                RpiRgbLedMatrixWebApi.renderConfigsRepo.delete(request.params.id);
+            if (RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.contains(request.params.id)) {
+                RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.delete(request.params.id);
             } else if (!request.params.hasOwnProperty('missingError')) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
@@ -61,16 +61,16 @@ export class RpiRgbLedMatrixWebApi extends Object {
         });
 
         app.get(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs`, (request: Request, response: Response) => {
-            return response.status(200).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.readAll());
+            return response.status(200).send(RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.readAll());
         });
 
         app.get(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
-            if (!RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
+            if (!RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
             }
 
-            return response.status(200).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.read(request.params.id));
+            return response.status(200).send(RpiRgbLedMatrixWebApi.RENDER_CONFIGS_REPO.read(request.params.id));
         });
     }
 };
