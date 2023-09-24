@@ -9,13 +9,13 @@ export class RenderConfigsWebApi extends Object {
     // FIXME: Get that path from config. And decouple it somehow.
     static readonly REPO: RenderConfigsRepository = new RenderConfigsRepository(new SimpleJSONFileModelStorage(path.join(__dirname, '..', '..', 'data', 'renderConfigs.json')));
     static readonly API_VERSION: string = 'v1';
-    static readonly API_BASEPATH: string = `/api/${RenderConfigsWebApi.API_VERSION}`;
+    static readonly API_BASEPATH: string = `/api/${RenderConfigsWebApi.API_VERSION}/renderconfigs`;
 
     constructor(app: Application) {
         super();
         Object.setPrototypeOf(this, RenderConfigsWebApi.prototype);
 
-        app.post(`${RenderConfigsWebApi.API_BASEPATH}/renderconfigs/`, (request: Request, response: Response) => {
+        app.post(`${RenderConfigsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
             let renderConfig: RenderConfig = request.body;
 
 
@@ -30,7 +30,7 @@ export class RenderConfigsWebApi extends Object {
             return result;
         });
 
-        app.patch(`${RenderConfigsWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.patch(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
             if (!RenderConfigsWebApi.REPO.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
@@ -41,7 +41,7 @@ export class RenderConfigsWebApi extends Object {
             return response.status(200).send(RenderConfigsWebApi.REPO.update(renderConfig));
         });
 
-        app.delete(`${RenderConfigsWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.delete(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
             if (RenderConfigsWebApi.REPO.contains(request.params.id)) {
                 RenderConfigsWebApi.REPO.delete(request.params.id);
             } else if (!request.params.hasOwnProperty('missingError')) {
@@ -52,11 +52,11 @@ export class RenderConfigsWebApi extends Object {
             return response.status(200).send();
         });
 
-        app.get(`${RenderConfigsWebApi.API_BASEPATH}/renderconfigs`, (request: Request, response: Response) => {
+        app.get(`${RenderConfigsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
             return response.status(200).send(RenderConfigsWebApi.REPO.readAll());
         });
 
-        app.get(`${RenderConfigsWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.get(`${RenderConfigsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
             if (!RenderConfigsWebApi.REPO.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
