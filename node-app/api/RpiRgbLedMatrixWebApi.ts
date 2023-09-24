@@ -4,7 +4,7 @@ import { BearerAuthorization } from "./BearerAuthorization";
 import { RenderConfigsWebApi } from "./RenderConfigsWebApi";
 
 export class RpiRgbLedMatrixWebApi extends Object {
-    constructor(app: Application, tokens: Array<string>, renderConfigs: Object = {}) {
+    constructor(app: Application, tokens: Array<string>) {
         super();
         Object.setPrototypeOf(this, RpiRgbLedMatrixWebApi.prototype);
 
