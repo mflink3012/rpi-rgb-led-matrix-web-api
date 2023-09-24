@@ -14,7 +14,7 @@ export abstract class RenderConfig extends Model {
     }
 };
 
-export class ImageRenderConfig extends RenderConfig {
+export abstract class ImageRenderConfig extends RenderConfig {
     dimensions: Dimensions = new Dimensions();
     image: string = 'media/images/test_64x64.bmp';
 
@@ -45,7 +45,7 @@ export class AnimatedImageRenderConfig extends ImageRenderConfig {
     }
 };
 
-export class TextRenderConfig extends RenderConfig {
+export abstract class TextRenderConfig extends RenderConfig {
     font: string = '4x6';
     text: string = 'n/a';
     color: string = 'ffffffff'; // white
@@ -81,10 +81,8 @@ export class AnimatedTextRenderConfig extends TextRenderConfig {
 };
 
 export const RenderConfigRegistry: Object = {
-    ImageRenderConfig,
     StaticImageRenderConfig,
     AnimatedImageRenderConfig,
-    TextRenderConfig,
     StaticTextRenderConfig,
     AnimatedTextRenderConfig
 }
