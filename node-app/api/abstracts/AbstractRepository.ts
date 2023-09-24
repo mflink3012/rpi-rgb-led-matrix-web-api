@@ -19,7 +19,7 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
     private readonly SEMAPHORE: semaphore.Semaphore = semaphore(1);
     /** The data of this repository. */
     protected models: Object = {};
-    protected readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash', 'modelType'];
+    protected static readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash', 'modelType'];
     protected storage: ModelStorageInterface<M> = new NoOpModelStorage();
 
     constructor(storage: ModelStorageInterface<M> = null) {
@@ -170,7 +170,7 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
                 let updatedModel: M = this.deepClone(this.models[model.id]);
                 let existingModelHash: string = updatedModel.hash;
 
-                this.deepCopy(model, updatedModel);
+                AbstractRepository.deepCopy(model, updatedModel);
 
                 let updatedModelHash: string = this.createHash(updatedModel);
 
@@ -320,7 +320,7 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
         }
 
         let model = new RenderConfigRegistry[sourceModel.modelType]();
-        this.deepCopy(sourceModel, model);
+        AbstractRepository.deepCopy(sourceModel, model);
         return model;
     }
 
@@ -332,9 +332,9 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
      * @param source The source to copy the field-values from.
      * @param target The target, where to copy the values to.
      */
-    protected deepCopy(source: Object, target: Object): void {
+    protected static deepCopy(source: Object, target: Object): void {
         Object.getOwnPropertyNames(target).forEach(field => {
-            if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
+            if (!AbstractRepository.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
                 if (source[field] != null && Array.isArray(target[field])) {
                     target[field] = [];
                     source[field].forEach(value => {
