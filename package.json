@@ -1,4 +1,7 @@
 {
+  "name": "rpi-rgb-led-matrix-web-api",
+  "version": "1.0.0",
+  "description": "A HTTP-based API to run a LED-matrix with rpi-rgb-led-matrix",
   "dependencies": {
     "bootstrap": "5.3.1",
     "browserify": "17.0.0",
@@ -13,20 +16,6 @@
     "uuid": "9.0.1",
     "vue": "3.3.4"
   },
-  "name": "rpi-rgb-led-matrix-web-api",
-  "version": "1.0.0",
-  "description": "A HTTP-based API to run a LED-matrix with rpi-rgb-led-matrix",
-  "main": "app.js",
-  "directories": {
-    "bin": "dist/bin",
-    "lib": "node_modules"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/typescript/bin/tsc -p node-app/tsconfig.json && node ./dist/bin/app.js"
-  },
-  "author": "Marco",
-  "license": "LGPL-3.0-or-later",
   "devDependencies": {
     "@types/browserify": "12.0.38",
     "@types/cors": "^2.8.14",
@@ -35,5 +24,17 @@
     "@types/semaphore": "1.1.1",
     "@types/uuid": "9.0.4",
     "typescript": "5.2.2"
-  }
+  },
+  "main": "app.js",
+  "directories": {
+    "bin": "dist/bin",
+    "lib": "node_modules"
+  },
+  "scripts": {
+    "clean": "rm -rf ./dist/bin",
+    "build": "npm run clean && ./node_modules/typescript/bin/tsc -p node-app/tsconfig.json",
+    "start": "npm run build && node ./dist/bin/app.js"
+  },
+  "author": "Marco",
+  "license": "LGPL-3.0-or-later"
 }
