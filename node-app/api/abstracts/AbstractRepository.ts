@@ -5,7 +5,7 @@ import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
 import { NoOpModelStorage } from "../implementations/NoOpModelStorage";
-import { RenderConfigRegistry } from "../models/RenderConfig";
+import { RenderConfigRegistry } from "../models/RenderConfigRegistry";
 
 /**
  * An abstract class for handling models in a repository with transaction-awareness on modification operations (create, update, delete).

@@ -1,4 +1,4 @@
-import { RenderConfig } from "../models/RenderConfig";
+import { RenderConfig } from "../models/RenderConfigRegistry";
 import { AbstractRepository } from "../abstracts/AbstractRepository";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
 
