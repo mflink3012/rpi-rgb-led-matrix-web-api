@@ -1,4 +1,4 @@
-import express, { Application, NextFunction, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import { ErrorObject } from "./ErrorObject";
 import { RenderConfig } from "./models/RenderConfig";
@@ -10,8 +10,8 @@ import path from "path";
 export class RpiRgbLedMatrixWebApi extends Object {
     // FIXME: Get that path from config. And decouple it somehow.
     static readonly renderConfigsRepo: RenderConfigsRepository = new RenderConfigsRepository(new SimpleJSONFileModelStorage(path.join(__dirname, '..', '..', 'data', 'renderConfigs.json')));
-    readonly API_VERSION: string = 'v1';
-    readonly API_BASEPATH: string = `/api/${this.API_VERSION}`;
+    static readonly API_VERSION: string = 'v1';
+    static readonly API_BASEPATH: string = `/api/${RpiRgbLedMatrixWebApi.API_VERSION}`;
 
     constructor(app: Application, tokens: Array<string>, renderConfigs: Object = {}) {
         super();
@@ -23,7 +23,7 @@ export class RpiRgbLedMatrixWebApi extends Object {
 
         app.use(BearerAuthorization(tokens));
 
-        app.post(`${this.API_BASEPATH}/renderconfigs/`, (request: Request, response: Response) => {
+        app.post(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/`, (request: Request, response: Response) => {
             let renderConfig: RenderConfig = request.body;
 
 
@@ -38,7 +38,7 @@ export class RpiRgbLedMatrixWebApi extends Object {
             return result;
         });
 
-        app.patch(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.patch(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
             if (!RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
@@ -49,7 +49,7 @@ export class RpiRgbLedMatrixWebApi extends Object {
             return response.status(200).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.update(renderConfig));
         });
 
-        app.delete(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.delete(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
             if (RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
                 RpiRgbLedMatrixWebApi.renderConfigsRepo.delete(request.params.id);
             } else if (!request.params.hasOwnProperty('missingError')) {
@@ -60,11 +60,11 @@ export class RpiRgbLedMatrixWebApi extends Object {
             return response.status(200).send();
         });
 
-        app.get(`${this.API_BASEPATH}/renderconfigs`, (request: Request, response: Response) => {
+        app.get(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs`, (request: Request, response: Response) => {
             return response.status(200).send(RpiRgbLedMatrixWebApi.renderConfigsRepo.readAll());
         });
 
-        app.get(`${this.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
+        app.get(`${RpiRgbLedMatrixWebApi.API_BASEPATH}/renderconfigs/:id`, (request: Request, response: Response) => {
             if (!RpiRgbLedMatrixWebApi.renderConfigsRepo.contains(request.params.id)) {
                 let error: ErrorObject = new ErrorObject('RENDER_CONFIG:NOT_FOUND', 'There is no render-config with id (id)!', { id: request.params.id });
                 return response.status(404).send(error);
