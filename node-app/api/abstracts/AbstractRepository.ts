@@ -325,13 +325,24 @@ export abstract class AbstractRepository<M extends Model> extends Object impleme
     }
 
     /**
-     * FIXME: NOT WORKING FULLY RIGHT NOW!
+     * Copies all values from fields existing in target to the corresponding fields in target.
+     * Fields not in target are ignored, fields in target but not in source are kept as is.
+     * It will recurse on other objects and array, which shall be copied, in the same way.
+     * 
+     * @param source The source to copy the field-values from.
+     * @param target The target, where to copy the values to.
      */
     protected deepCopy(source: Object, target: Object): void {
         Object.getOwnPropertyNames(target).forEach(field => {
             if (!this.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
                 if (source[field] != null && Array.isArray(target[field])) {
-                    target[field] = source[field].slice();
+                    target[field] = [];
+                    source[field].forEach(value => {
+                        let s: Object = { v: value };
+                        let t: Object = { v: null };
+                        this.deepCopy(s, t);
+                        target[field].push(t['v']);
+                    });
                 } else if (source[field] != null && typeof(target[field]) == 'object') {
                     this.deepCopy(source[field], target[field]);
                 } else {
