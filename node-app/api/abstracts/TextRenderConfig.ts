@@ -1,6 +1,6 @@
-import { AbstractRenderConfig } from "./AbstractRenderConfig";
+import { RenderConfig } from "./RenderConfig";
 
-export abstract class AbstractTextRenderConfig extends AbstractRenderConfig {
+export abstract class TextRenderConfig extends RenderConfig {
     font: string = '4x6';
     text: string = 'n/a';
     color: string = 'ffffffff'; // white
@@ -9,6 +9,6 @@ export abstract class AbstractTextRenderConfig extends AbstractRenderConfig {
     constructor() {
         super();
         this.modelType = 'StaticTextRenderConfig';
-        Object.setPrototypeOf(this, AbstractTextRenderConfig.prototype);
+        Object.setPrototypeOf(this, TextRenderConfig.prototype);
     }
 };

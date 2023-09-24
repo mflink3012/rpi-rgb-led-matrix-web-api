@@ -1,4 +1,4 @@
-export abstract class AbstractModel extends Object {
+export abstract class Model extends Object {
     id: string;
     created: string;
     updated: string;
@@ -8,6 +8,6 @@ export abstract class AbstractModel extends Object {
 
     constructor() {
         super();
-        Object.setPrototypeOf(this, AbstractModel.prototype);
+        Object.setPrototypeOf(this, Model.prototype);
     }
 };

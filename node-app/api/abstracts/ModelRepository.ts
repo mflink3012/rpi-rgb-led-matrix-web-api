@@ -1,5 +1,5 @@
 import { RepositoryInterface } from "../interfaces/RepositoryInterface";
-import { AbstractModel } from "./AbstractModel";
+import { Model } from "./Model";
 import { v4 as uuidv4 } from "uuid";
 import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
@@ -14,7 +14,7 @@ import { RenderConfigRegistry } from "../models/RenderConfigRegistry";
  * @extends Object
  * @implements {RepositoryInterface}
  */
-export abstract class AbstractRepository<M extends AbstractModel> extends Object implements RepositoryInterface<M> {
+export abstract class ModelRepository<M extends Model> extends Object implements RepositoryInterface<M> {
     /** Semaphore to enable transaction-save operations. */
     private readonly SEMAPHORE: semaphore.Semaphore = semaphore(1);
     /** The data of this repository. */
@@ -24,7 +24,7 @@ export abstract class AbstractRepository<M extends AbstractModel> extends Object
 
     constructor(storage: ModelStorageInterface<M> = null) {
         super();
-        Object.setPrototypeOf(this, AbstractRepository.prototype);
+        Object.setPrototypeOf(this, ModelRepository.prototype);
 
         if (storage && storage !== null) {
             this.storage = storage;
@@ -170,7 +170,7 @@ export abstract class AbstractRepository<M extends AbstractModel> extends Object
                 let updatedModel: M = this.deepClone(this.models[model.id]);
                 let existingModelHash: string = updatedModel.hash;
 
-                AbstractRepository.deepCopy(model, updatedModel);
+                ModelRepository.deepCopy(model, updatedModel);
 
                 let updatedModelHash: string = this.createHash(updatedModel);
 
@@ -320,7 +320,7 @@ export abstract class AbstractRepository<M extends AbstractModel> extends Object
         }
 
         let model = new RenderConfigRegistry[sourceModel.modelType]();
-        AbstractRepository.deepCopy(sourceModel, model);
+        ModelRepository.deepCopy(sourceModel, model);
         return model;
     }
 
@@ -334,7 +334,7 @@ export abstract class AbstractRepository<M extends AbstractModel> extends Object
      */
     protected static deepCopy(source: Object, target: Object): void {
         Object.getOwnPropertyNames(target).forEach(field => {
-            if (!AbstractRepository.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
+            if (!ModelRepository.BLACKLISTED_FIELDS_IN_UPDATE.includes(field) && source.hasOwnProperty(field)) {
                 if (source[field] != null && Array.isArray(target[field])) {
                     target[field] = [];
                     source[field].forEach(value => {

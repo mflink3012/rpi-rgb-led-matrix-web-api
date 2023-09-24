@@ -1,9 +1,9 @@
 import * as fs from "fs";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
-import { AbstractModel } from "../abstracts/AbstractModel";
+import { Model } from "../abstracts/Model";
 import path from "path";
 
-export class SimpleJSONFileModelStorage<M extends AbstractModel> implements ModelStorageInterface<M> {
+export class SimpleJSONFileModelStorage<M extends Model> implements ModelStorageInterface<M> {
     private file: string = null;
 
     constructor(file: string, createIfNonExistant: boolean = true, defaultContent: Object = {}) {

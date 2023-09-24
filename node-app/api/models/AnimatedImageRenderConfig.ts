@@ -1,6 +1,6 @@
-import { AbstractImageRenderConfig } from "../abstracts/AbstractImageRenderConfig";
+import { ImageRenderConfig } from "../abstracts/ImageRenderConfig";
 
-export class AnimatedImageRenderConfig extends AbstractImageRenderConfig {
+export class AnimatedImageRenderConfig extends ImageRenderConfig {
     loops: number = 1;
 
     constructor() {

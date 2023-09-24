@@ -1,6 +1,6 @@
-import { AbstractImageRenderConfig } from "../abstracts/AbstractImageRenderConfig";
+import { ImageRenderConfig } from "../abstracts/ImageRenderConfig";
 
-export class StaticImageRenderConfig extends AbstractImageRenderConfig {
+export class StaticImageRenderConfig extends ImageRenderConfig {
     time: number = 3; // seconds
 
     constructor() {

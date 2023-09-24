@@ -1,7 +1,7 @@
-import { AbstractModel } from "./AbstractModel";
+import { Model } from "./Model";
 import { Position } from "../models/Position";
 
-export abstract class AbstractRenderConfig extends AbstractModel {
+export abstract class RenderConfig extends Model {
     name: string = 'A new render configuration';
     backgroundColor: string = '00000000'; // transparent
     position: Position = new Position();
@@ -9,6 +9,6 @@ export abstract class AbstractRenderConfig extends AbstractModel {
     constructor() {
         super();
         this.modelType = 'RenderConfig';
-        Object.setPrototypeOf(this, AbstractRenderConfig.prototype);
+        Object.setPrototypeOf(this, RenderConfig.prototype);
     }
 };
