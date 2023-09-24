@@ -1,31 +1,7 @@
-import { Dimensions } from "./Dimensions";
-import { Model } from "./Model";
-import { Position } from "./Position";
+import { AbstractImageRenderConfig } from "../abstracts/AbstractImageRenderConfig";
+import { AbstractTextRenderConfig } from "../abstracts/AbstractTextRenderConfig";
 
-export abstract class RenderConfig extends Model {
-    name: string = 'A new render configuration';
-    backgroundColor: string = '00000000'; // transparent
-    position: Position = new Position();
-
-    constructor() {
-        super();
-        this.modelType = 'RenderConfig';
-        Object.setPrototypeOf(this, RenderConfig.prototype);
-    }
-};
-
-export abstract class ImageRenderConfig extends RenderConfig {
-    dimensions: Dimensions = new Dimensions();
-    image: string = 'media/images/test_64x64.bmp';
-
-    constructor() {
-        super();
-        this.modelType = 'ImageRenderConfig';
-        Object.setPrototypeOf(this, ImageRenderConfig.prototype);
-    }
-};
-
-export class StaticImageRenderConfig extends ImageRenderConfig {
+export class StaticImageRenderConfig extends AbstractImageRenderConfig {
     time: number = 3; // seconds
 
     constructor() {
@@ -35,7 +11,7 @@ export class StaticImageRenderConfig extends ImageRenderConfig {
     }
 };
 
-export class AnimatedImageRenderConfig extends ImageRenderConfig {
+export class AnimatedImageRenderConfig extends AbstractImageRenderConfig {
     loops: number = 1;
 
     constructor() {
@@ -45,20 +21,7 @@ export class AnimatedImageRenderConfig extends ImageRenderConfig {
     }
 };
 
-export abstract class TextRenderConfig extends RenderConfig {
-    font: string = '4x6';
-    text: string = 'n/a';
-    color: string = 'ffffffff'; // white
-    spacing: number = 1;
-
-    constructor() {
-        super();
-        this.modelType = 'StaticTextRenderConfig';
-        Object.setPrototypeOf(this, TextRenderConfig.prototype);
-    }
-};
-
-export class StaticTextRenderConfig extends TextRenderConfig {
+export class StaticTextRenderConfig extends AbstractTextRenderConfig {
     time: number = 3; // seconds
 
     constructor() {
@@ -68,7 +31,7 @@ export class StaticTextRenderConfig extends TextRenderConfig {
     }
 };
 
-export class AnimatedTextRenderConfig extends TextRenderConfig {
+export class AnimatedTextRenderConfig extends AbstractTextRenderConfig {
     blinkSpeed: number = 5; // pixels
     direction: string = 'south'; // out of (south,west,north,east)
     loops: number = 1;

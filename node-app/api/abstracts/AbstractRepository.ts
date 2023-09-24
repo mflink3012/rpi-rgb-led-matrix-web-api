@@ -1,5 +1,5 @@
 import { RepositoryInterface } from "../interfaces/RepositoryInterface";
-import { Model } from "../models/Model";
+import { AbstractModel } from "./AbstractModel";
 import { v4 as uuidv4 } from "uuid";
 import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
@@ -14,7 +14,7 @@ import { RenderConfigRegistry } from "../models/RenderConfig";
  * @extends Object
  * @implements {RepositoryInterface}
  */
-export abstract class AbstractRepository<M extends Model> extends Object implements RepositoryInterface<M> {
+export abstract class AbstractRepository<M extends AbstractModel> extends Object implements RepositoryInterface<M> {
     /** Semaphore to enable transaction-save operations. */
     private readonly SEMAPHORE: semaphore.Semaphore = semaphore(1);
     /** The data of this repository. */

@@ -1,7 +1,7 @@
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
-import { Model } from "../models/Model";
+import { AbstractModel } from "../abstracts/AbstractModel";
 
-export class NoOpModelStorage<M extends Model> implements ModelStorageInterface<M> {
+export class NoOpModelStorage<M extends AbstractModel> implements ModelStorageInterface<M> {
     save(models: Object): boolean {
         return true;
     }

@@ -1,9 +1,9 @@
-import { Model } from "./Model";
-import { RenderConfig } from "./RenderConfig";
+import { AbstractModel } from "../abstracts/AbstractModel";
+import { AbstractRenderConfig } from "../abstracts/AbstractRenderConfig";
 
-export class Playlist extends Model {
+export class Playlist extends AbstractModel {
     name: string = 'default';
-    renderconfigs: Array<RenderConfig> = new Array<RenderConfig>();
+    renderconfigs: Array<AbstractRenderConfig> = new Array<AbstractRenderConfig>();
     endless: boolean = true;
     shuffle: boolean = false;
 

@@ -1,9 +1,9 @@
-import { Model } from "../models/Model";
+import { AbstractModel } from "../abstracts/AbstractModel";
 
 /**
  * @interface
  */
-export interface RepositoryInterface<M extends Model> {
+export interface RepositoryInterface<M extends AbstractModel> {
     /**
      * Checks for existance of one model with `id`.
      * 
