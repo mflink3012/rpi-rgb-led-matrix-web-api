@@ -8,7 +8,7 @@ export abstract class TextRenderConfig extends RenderConfig {
 
     constructor() {
         super();
-        this.modelType = 'StaticTextRenderConfig';
+        this.modelType = 'TextRenderConfig';
         Object.setPrototypeOf(this, TextRenderConfig.prototype);
     }
 };
