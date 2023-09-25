@@ -9,6 +9,7 @@ export class Playlist extends Model {
 
     constructor() {
         super();
+        this.modelType = 'Playlist';
         Object.setPrototypeOf(this, Playlist.prototype);
     }
 };
