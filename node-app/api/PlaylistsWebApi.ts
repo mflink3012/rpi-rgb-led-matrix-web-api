@@ -34,7 +34,7 @@ export class PlaylistsWebApi extends Object {
 
         // Read all
         app.get(`${PlaylistsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
-            response.status(500).json(new ErrorObject('READ_PLAYLISTS:NOT_IMPLEMENTED', 'Not yet implemented!'));
+            return response.status(200).send(PlaylistsWebApi.REPO.readAll());
         });
 
         // Read one
