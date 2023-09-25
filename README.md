@@ -6,7 +6,7 @@
 
 A HTTP-based API to run a LED-matrix with [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix).
 
-## Prerequisites
+## Prerequisites to run
 
 * one compatible RGB LED Matrix P3, for example [this one](https://www.waveshare.com/wiki/RGB-Matrix-P3-64x64)
 * one [Raspberry PI supported by rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix#all-raspberry-pi-versions-supported)
@@ -15,3 +15,10 @@ A HTTP-based API to run a LED-matrix with [rpi-rgb-led-matrix](https://github.co
 * `npm` installed on the host (your computer) and on Raspberry PI
 * `Typescript` installed via npm (`npm install typescript`) on the host to transpile the code to JavaScript (you can do that on the RPI, but is slower)
 * `NodeJS` installed (use provided [install_nodejs](./install_nodejs)) on the Raspberry PI to run the code
+
+## Prerequisites to develop
+
+* `npm` installed on the host (your computer)
+* `Typescript` installed via npm (`npm install typescript`) on the host to transpile the code to JavaScript
+* `NodeJS` installed (use provided [install_nodejs](./install_nodejs)) on the host
+
