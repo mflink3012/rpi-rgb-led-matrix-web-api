@@ -61,7 +61,14 @@ export class PlaylistsWebApi extends Object {
 
         // Delete one
         app.delete(`${PlaylistsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
-            response.status(500).json(new ErrorObject('DELETE_PLAYLIST:NOT_IMPLEMENTED', 'Not yet implemented!'));
+            if (PlaylistsWebApi.REPO.contains(request.params.id)) {
+                PlaylistsWebApi.REPO.delete(request.params.id);
+            } else if (!request.params.hasOwnProperty('missingError')) {
+                let error: ErrorObject = new ErrorObject('PLAYLIST:NOT_FOUND', 'There is no playlist with id (id)!', { id: request.params.id });
+                return response.status(404).send(error);
+            }
+
+            return response.status(200).send();
         });
     }
 };
