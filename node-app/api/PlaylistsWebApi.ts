@@ -39,7 +39,12 @@ export class PlaylistsWebApi extends Object {
 
         // Read one
         app.get(`${PlaylistsWebApi.API_BASEPATH}/:id`, (request: Request, response: Response) => {
-            response.status(500).json(new ErrorObject('READ_PLAYLIST:NOT_IMPLEMENTED', 'Not yet implemented!'));
+            if (!PlaylistsWebApi.REPO.contains(request.params.id)) {
+                let error: ErrorObject = new ErrorObject('PLAYLIST:NOT_FOUND', 'There is no playlist with id (id)!', { id: request.params.id });
+                return response.status(404).send(error);
+            }
+
+            return response.status(200).send(PlaylistsWebApi.REPO.read(request.params.id));
         });
 
         // Update one
