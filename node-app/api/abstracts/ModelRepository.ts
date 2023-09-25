@@ -5,6 +5,7 @@ import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
 import { NoOpModelStorage } from "../implementations/NoOpModelStorage";
+import { ModelRegistry } from "../interfaces/ModelRegistry";
 
 /**
  * An abstract class for handling models in a repository with transaction-awareness on modification operations (create, update, delete).
@@ -20,9 +21,9 @@ export abstract class ModelRepository<M extends Model> extends Object implements
     protected models: Object = {};
     protected static readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash', 'modelType'];
     protected storage: ModelStorageInterface<M> = new NoOpModelStorage();
-    protected registry: Object;
+    protected registry: ModelRegistry;
 
-    constructor(registry: Object, storage: ModelStorageInterface<M> = null) {
+    constructor(registry: ModelRegistry, storage: ModelStorageInterface<M> = null) {
         super();
         Object.setPrototypeOf(this, ModelRepository.prototype);
         this.registry = registry;
