@@ -5,7 +5,6 @@ import semaphore from "semaphore";
 import { sha256 } from "js-sha256";
 import { ModelStorageInterface } from "../interfaces/StorageInterface";
 import { NoOpModelStorage } from "../implementations/NoOpModelStorage";
-import { RenderConfigRegistry } from "../models/RenderConfigRegistry";
 
 /**
  * An abstract class for handling models in a repository with transaction-awareness on modification operations (create, update, delete).
@@ -21,10 +20,12 @@ export abstract class ModelRepository<M extends Model> extends Object implements
     protected models: Object = {};
     protected static readonly BLACKLISTED_FIELDS_IN_UPDATE = ['id', 'version', 'created', 'updated', 'hash', 'modelType'];
     protected storage: ModelStorageInterface<M> = new NoOpModelStorage();
+    protected registry: Object;
 
-    constructor(storage: ModelStorageInterface<M> = null) {
+    constructor(registry: Object, storage: ModelStorageInterface<M> = null) {
         super();
         Object.setPrototypeOf(this, ModelRepository.prototype);
+        this.registry = registry;
 
         if (storage && storage !== null) {
             this.storage = storage;
@@ -315,11 +316,11 @@ export abstract class ModelRepository<M extends Model> extends Object implements
     }
 
     protected createModel(sourceModel: M): M {
-        if (!RenderConfigRegistry[sourceModel.modelType]) {
+        if (!this.registry[sourceModel.modelType]) {
             throw Error(`${sourceModel.modelType} is not a valid modelType.`)
         }
 
-        let model = new RenderConfigRegistry[sourceModel.modelType]();
+        let model = new this.registry[sourceModel.modelType]();
         ModelRepository.deepCopy(sourceModel, model);
         return model;
     }
