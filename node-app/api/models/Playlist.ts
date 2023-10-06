@@ -1,9 +1,8 @@
 import { Model } from "../abstracts/Model";
-import { RenderConfig } from "../abstracts/RenderConfig";
 
 export class Playlist extends Model {
     name: string = 'default';
-    renderconfigs: Array<RenderConfig> = new Array<RenderConfig>();
+    renderconfigs: Array<string> = new Array<string>();
     endless: boolean = true;
     shuffle: boolean = false;
 
