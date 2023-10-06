@@ -15,8 +15,6 @@ export class PlaylistsWebApi extends Object {
         super();
         Object.setPrototypeOf(this, PlaylistsWebApi.prototype);
 
-        // TODO: Register methods for handling CRUD on playlists
-
         // Create
         app.post(`${PlaylistsWebApi.API_BASEPATH}/`, (request: Request, response: Response) => {
             let playlist: Playlist = request.body;
