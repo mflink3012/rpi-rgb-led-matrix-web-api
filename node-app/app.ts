@@ -22,7 +22,7 @@ if (!fs.existsSync(ACCESS_TOKENS_FILEPATH)) {
     tokens.push(token);
     let tokens_content: string = JSON.stringify(tokens);
     fs.writeFileSync(ACCESS_TOKENS_FILEPATH, tokens_content, 'utf-8');
-    console.log('File %s didn\'t exist, so it has be created.', ACCESS_TOKENS_FILEPATH);
+    console.log('File %s didn\'t exist, so it has been created.', ACCESS_TOKENS_FILEPATH);
     console.log('Initialized a first access-token: %s', token);
 }
 
